@@ -4,7 +4,7 @@ import { getQuestions } from './questions';
 
 export default function handleInitialData() {
   return (dispatch) => {
-    return getInitialData().then(({ users, tweets }) => {
+    return getInitialData().then(({ users, questions }) => {
       dispatch(getUsers(users));
       dispatch(getQuestions(questions));
     });
