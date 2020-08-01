@@ -41,7 +41,7 @@ const SignIn = (props) => {
   const [selectedUser, setSelectedUser] = useState('');
   console.log('selectedUser' + selectedUser);
   const classes = useStyles();
-  const { users, userLogin } = props;
+  const { users, handleUserLogin } = props;
   return (
     <Fragment>
       <Grid container style={{ marginTop: 40 }}>
@@ -69,12 +69,17 @@ const SignIn = (props) => {
               ))}
             </CardMedia>
             <CardContent>
-              <select onChange={(e) => setSelectedUser(e.target.value)}>
-                <option value='chooseUser' disabled selected>
+              <select
+                defaultValue='chooseUser'
+                onChange={(e) => setSelectedUser(e.target.value)}
+              >
+                <option value='chooseUser' disabled>
                   Select User to Login
                 </option>
                 {users.map((user) => (
-                  <option value={user.id}>{user.name}</option>
+                  <option value={user.id} key={user.id}>
+                    {user.name}
+                  </option>
                 ))}
               </select>
             </CardContent>
@@ -85,7 +90,7 @@ const SignIn = (props) => {
                 className={classes.button}
                 onClick={(e) => {
                   e.preventDefault();
-                  userLogin(selectedUser);
+                  handleUserLogin(selectedUser);
                 }}
               >
                 Sign In

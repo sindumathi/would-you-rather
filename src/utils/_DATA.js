@@ -176,6 +176,9 @@ export function _saveQuestion(question) {
 }
 
 export function _saveQuestionAnswer({ authedUser, qid, answer }) {
+  console.log('----------inside fake db---------------');
+  console.log('authedUser' + authedUser + 'qid' + qid + 'answer' + answer);
+  console.log('-------------------------');
   return new Promise((res, rej) => {
     setTimeout(() => {
       users = {

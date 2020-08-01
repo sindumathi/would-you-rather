@@ -1,27 +1,37 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import handleInitialData from '../actions/shared';
+import { setAuthUser } from '../actions/authedUser';
 
-/*import SignIn from './SignIn'; */
+import SignIn from './SignIn';
 import Dashboard from './Dashboard';
 
 class App extends React.Component {
-  state = { authUser: '' };
-
   componentDidMount() {
     this.props.dispatch(handleInitialData());
   }
-  userLogin = (user) => {
-    this.setState({ authUser: user });
+
+  handleUserLogin = (user) => {
+    this.props.dispatch(setAuthUser(user));
   };
   render() {
+    const { authedUser } = this.props;
     return (
       <div>
-        {/*<SignIn userLogin={this.userLogin} />   */}
-        <Dashboard />
+        {authedUser ? (
+          <Dashboard authedUser={authedUser} />
+        ) : (
+          <SignIn handleUserLogin={this.handleUserLogin} />
+        )}
       </div>
     );
   }
 }
 
-export default connect()(App);
+function mapStateToProps({ authedUser }) {
+  return {
+    authedUser,
+  };
+}
+
+export default connect(mapStateToProps)(App);
