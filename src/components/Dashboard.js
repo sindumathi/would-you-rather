@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-//import Questions from './Questions';
-import AnswerQuestion from './AnswerQuestion';
+import Questions from './Questions';
 import Header from './Header';
 import {
   List,
@@ -28,21 +27,14 @@ class Dashboard extends Component {
   state = { answered: 'Unanswered' };
   handleQuestionsDisplay = (e, value) => {
     e.preventDefault();
-    console.log('Inside button click----------------------' + value);
     this.setState({ answered: value });
   };
 
   render() {
-    const {
-      unansweredQuestionIDs,
-      answeredQuestionIDs,
-      classes,
-      authedUser,
-    } = this.props;
+    const { unansweredQuestionIDs, answeredQuestionIDs, classes } = this.props;
     const { answered } = this.state;
     const QuestionIDs =
       answered === 'answered' ? answeredQuestionIDs : unansweredQuestionIDs;
-    console.log('answered state' + answered);
     return (
       <div className={classes.root}>
         <Header />
@@ -64,12 +56,12 @@ class Dashboard extends Component {
             </Button>
           </CardActions>
           <List className={classes.list}>
-            {QuestionIDs.map((id) => (
-              <ListItem key={`${id}`}>
-                {' '}
-                <AnswerQuestion id={id} authedUser={authedUser} />
-              </ListItem>
-            ))}
+            {QuestionIDs &&
+              QuestionIDs.map((id) => (
+                <ListItem key={`${id}`}>
+                  <Questions id={id} authedUser />
+                </ListItem>
+              ))}
           </List>
           ;
         </Card>
@@ -80,15 +72,10 @@ class Dashboard extends Component {
 
 const mapStateToProps = ({ authedUser, questions, users }) => {
   const userAnswer = users[authedUser].answers;
-  console.log('------------useranser-----------------');
-  console.log(userAnswer);
-  console.log(questions);
-  console.log('-----------------------------');
   const answeredQuestionIDs = authedUser ? Object.keys(userAnswer) : [];
-  const unansweredQuestionIDs = Object.keys(questions).filter(
-    (id) => !answeredQuestionIDs.includes(id)
-  );
-
+  const unansweredQuestionIDs = Object.keys(questions)
+    .filter((id) => !answeredQuestionIDs.includes(id))
+    .sort((x, y) => y.timestamp - x.timestamp);
   return {
     answeredQuestionIDs,
     unansweredQuestionIDs,

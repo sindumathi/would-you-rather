@@ -22,9 +22,6 @@ function saveAnswer({ authedUser, qid, answer }) {
 }
 
 export function handleSaveAnswer(info) {
-  console.log('&&&&&&&&&&&&&&&&&&&&&&&&');
-  console.log(info);
-  console.log('&&&&&&&&&&&&&&&&&&&&&&&&');
   return (dispatch) => {
     return saveQuestionAnswer(info)
       .then((info) => dispatch(saveAnswer(info)))

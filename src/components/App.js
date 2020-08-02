@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import handleInitialData from '../actions/shared';
 import { setAuthUser } from '../actions/authedUser';
 
 import SignIn from './SignIn';
 import Dashboard from './Dashboard';
+import AnswerQuestion from './AnswerQuestion';
 
-class App extends React.Component {
+class App extends Component {
   componentDidMount() {
     this.props.dispatch(handleInitialData());
   }
@@ -17,13 +19,28 @@ class App extends React.Component {
   render() {
     const { authedUser } = this.props;
     return (
-      <div>
-        {authedUser ? (
-          <Dashboard authedUser={authedUser} />
-        ) : (
-          <SignIn handleUserLogin={this.handleUserLogin} />
-        )}
-      </div>
+      <Router>
+        <div>
+          {authedUser ? (
+            <Fragment>
+              <Route exact path='/dashboard'>
+                <Dashboard authedUser={authedUser} />
+              </Route>
+              <Route
+                exact
+                path='/questions/:id'
+                render={(props) => (
+                  <AnswerQuestion authedUser={authedUser} {...props} />
+                )}
+              ></Route>
+            </Fragment>
+          ) : (
+            <Route exact path='/'>
+              <SignIn handleUserLogin={this.handleUserLogin} />
+            </Route>
+          )}
+        </div>
+      </Router>
     );
   }
 }

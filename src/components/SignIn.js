@@ -10,6 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import Avatar from '@material-ui/core/Avatar';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles({
   root: {
@@ -39,7 +40,6 @@ const useStyles = makeStyles({
 
 const SignIn = (props) => {
   const [selectedUser, setSelectedUser] = useState('');
-  console.log('selectedUser' + selectedUser);
   const classes = useStyles();
   const { users, handleUserLogin } = props;
   return (
@@ -88,8 +88,9 @@ const SignIn = (props) => {
                 variant='contained'
                 color='primary'
                 className={classes.button}
+                component={Link}
+                to='/dashboard'
                 onClick={(e) => {
-                  e.preventDefault();
                   handleUserLogin(selectedUser);
                 }}
               >

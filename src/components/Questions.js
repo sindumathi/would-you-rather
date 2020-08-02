@@ -1,21 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { formatQuestion } from '../utils/helper';
-import { Link } from 'react-router-dom';
+import { formattedResult } from '../utils/helper';
 import { makeStyles } from '@material-ui/core/styles';
-import {
-  Typography,
-  Paper,
-  Grid,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemAvatar,
-  ListItemIcon,
-  CardContent,
-  Button,
-  Avatar,
-} from '@material-ui/core';
+import { Paper, Grid, ListItemAvatar, Avatar } from '@material-ui/core';
+import SubmitAnswer from './SubmitAnswer';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,8 +32,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Questions = (props) => {
-  const { optionOne, optionTwo, avatarURL, author } = props.question;
+const Questions = ({ question, answerQuestion, comp = '', results = '' }) => {
+  const { avatarURL, author } = question;
   const classes = useStyles();
   return (
     <React.Fragment>
@@ -63,12 +52,7 @@ const Questions = (props) => {
             </ListItemAvatar>
           </Grid>
           <Grid item xs={9}>
-            <Typography gutterBottom variant='h5' component='h2'>
-              Would You Rather?
-            </Typography>
-            <ListItemText>{optionOne.text}</ListItemText>
-            <ListItemText>{optionTwo.text}</ListItemText>
-            <Link to={`questions/${id}`}>View Poll</Link>
+            <SubmitAnswer question={answerQuestion} comp={comp} />
           </Grid>
         </Grid>
       </Paper>
@@ -80,6 +64,7 @@ const mapStateToProps = ({ users, questions, authedUser }, { id }) => {
   const question = questions[id];
   return {
     question: formatQuestion(authedUser, question, users[question.author]),
+    answerQuestion: formattedResult(authedUser, question),
   };
 };
 
