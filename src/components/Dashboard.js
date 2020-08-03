@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Questions from './Questions';
-import Header from './Header';
+
 import {
   List,
   ListItem,
@@ -37,7 +37,6 @@ class Dashboard extends Component {
       answered === 'answered' ? answeredQuestionIDs : unansweredQuestionIDs;
     return (
       <div className={classes.root}>
-        <Header />
         <Card className={classes.card}>
           <CardActions>
             <Button

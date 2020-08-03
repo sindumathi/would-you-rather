@@ -136,6 +136,9 @@ export function _getQuestions() {
 }
 
 function formatQuestion({ optionOneText, optionTwoText, author }) {
+  console.log('------------data js ---------------');
+  console.log(optionOneText + 'one' + optionTwoText + 'two' + author);
+  console.log('------------data js ---------------');
   return {
     id: generateUID(),
     timestamp: Date.now(),

@@ -90,6 +90,7 @@ const SignIn = (props) => {
                 className={classes.button}
                 component={Link}
                 to='/dashboard'
+                disabled={selectedUser === 'chooseUser'}
                 onClick={(e) => {
                   handleUserLogin(selectedUser);
                 }}

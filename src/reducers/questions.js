@@ -1,4 +1,5 @@
-import { GET_QUESTIONS, SAVE_ANSWER } from '../actions/questions';
+import { GET_QUESTIONS, SAVE_ANSWER, ADD_QUESTION } from '../actions/questions';
+import { formatAddQuestion } from '../utils/helper';
 
 export default function questions(state = {}, action) {
   switch (action.type) {
@@ -19,7 +20,12 @@ export default function questions(state = {}, action) {
           },
         },
       };
-
+    case ADD_QUESTION:
+      const formattedQuestion = formatAddQuestion(action.question);
+      return {
+        ...state,
+        [formattedQuestion.id]: formattedQuestion,
+      };
     default:
       return state;
   }
