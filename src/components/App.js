@@ -21,10 +21,15 @@ class App extends Component {
   };
   render() {
     const { authedUser } = this.props;
+    console.log('authedUserrrrrrrrrrrrrrrrrrrrrrr' + authedUser);
     return (
       <Router>
         <div>
-          {authedUser ? (
+          {authedUser === null ? (
+            <Route exact path='/'>
+              <SignIn handleUserLogin={this.handleUserLogin} />
+            </Route>
+          ) : (
             <Fragment>
               <Header authedUser={authedUser} />
               <Route exact path='/dashboard'>
@@ -42,10 +47,6 @@ class App extends Component {
                 )}
               ></Route>
             </Fragment>
-          ) : (
-            <Route exact path='/'>
-              <SignIn handleUserLogin={this.handleUserLogin} />
-            </Route>
           )}
         </div>
       </Router>

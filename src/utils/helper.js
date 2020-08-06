@@ -28,6 +28,12 @@ export function formattedResult(authedUser, question) {
     optionTwo.votes.length,
     totalVotes
   );
+  const userAnswered = ((optionOne, optionTwo, authedUser) => {
+    return optionOne.votes.includes(authedUser) ||
+      optionTwo.votes.includes(authedUser)
+      ? true
+      : false;
+  })(optionOne, optionTwo, authedUser);
   return {
     optionOne,
     optionOnePercentage,
@@ -36,6 +42,7 @@ export function formattedResult(authedUser, question) {
     totalVotes,
     author,
     authedUser,
+    userAnswered,
     id,
   };
 }
@@ -48,6 +55,14 @@ function generateUID() {
 }
 
 export function formatAddQuestion({ optionOneText, optionTwoText, author }) {
+  console.log(
+    'optionOneText' +
+      optionOneText +
+      'optionTwoText' +
+      optionTwoText +
+      'author' +
+      author
+  );
   return {
     id: generateUID(),
     timestamp: Date.now(),

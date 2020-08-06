@@ -1,33 +1,13 @@
-import { saveQuestionAnswer } from '../utils/api';
 import { saveQuestion } from '../utils/api';
+import { addQuestionToUser } from './users';
 export const GET_QUESTIONS = 'GET_QUESTIONS';
-export const SAVE_ANSWER = 'SAVE_ANSWER';
 export const ADD_QUESTION = 'ADD_QUESTION';
+export const ADD_ANSWER_TO_QUESTION = 'ADD_ANSWER_TO_QUESTION';
 
 export function getQuestions(questions) {
   return {
     type: GET_QUESTIONS,
     questions,
-  };
-}
-
-function saveAnswer({ authedUser, qid, answer }) {
-  return {
-    type: SAVE_ANSWER,
-    authedUser,
-    qid,
-    answer,
-  };
-}
-
-export function handleSaveAnswer(info) {
-  return (dispatch) => {
-    return saveQuestionAnswer(info)
-      .then((info) => dispatch(saveAnswer(info)))
-      .catch((e) => {
-        console.warn('ERROR:Save Answer-', e);
-        dispatch(saveAnswer(info));
-      });
   };
 }
 
@@ -47,10 +27,23 @@ export function handleAddQuestion(question) {
   console.log('------------handleaddquestion---------------');
   return (dispatch) => {
     return saveQuestion(question)
-      .then((info) => dispatch(addQuestion(question)))
+      .then((question) => {
+        dispatch(addQuestion(question));
+        dispatch(addQuestionToUser(question));
+      })
       .catch((e) => {
         console.warn('ERROR: Add Question');
         dispatch(addQuestion(question));
+        dispatch(addQuestionToUser(question));
       });
+  };
+}
+
+export function saveAnswerToQuestion({ authedUser, qid, answer }) {
+  return {
+    type: ADD_ANSWER_TO_QUESTION,
+    authedUser,
+    qid,
+    answer,
   };
 }

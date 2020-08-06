@@ -7,12 +7,12 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
+
 import Avatar from '@material-ui/core/Avatar';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 500,
     minHeight: 500,
@@ -26,17 +26,33 @@ const useStyles = makeStyles({
   },
   content: {},
   button: {
-    width: '90%',
+    width: '100%',
+    backgroundColor: '#ab47bc',
     align: 'center',
   },
   avatar: {
-    display: 'inline-block',
-    border: '2px solid white',
-    '&:not(:first-of-type)': {
-      marginLeft: 10,
+    margin: 'auto',
+    width: theme.spacing(20),
+    height: theme.spacing(20),
+  },
+  cardHeader: {
+    backgroundColor: '#ab47bc',
+    marginBottom: 20,
+  },
+  selectUser: {
+    width: '100%',
+    maxWidth: '100%',
+    border: '1px solid #ab47bc',
+    height: '3em',
+    marginBottom: 40,
+    backgroundColor: '#f3e5f5',
+    '&:option': {
+      '&:hover': {
+        backgroundColor: '#ab47bc',
+      },
     },
   },
-});
+}));
 
 const SignIn = (props) => {
   const [selectedUser, setSelectedUser] = useState('');
@@ -45,61 +61,51 @@ const SignIn = (props) => {
   return (
     <Fragment>
       <Grid container style={{ marginTop: 40 }}>
-        <Grid item xs={1} sm={2} md={3} lg={4} xl={4} />
-        <Grid item xs={10} sm={8} md={6} lg={4} xl={4}>
-          <Card className={classes.root}>
-            <CardContent className={classes.content}>
-              <Typography
-                className={'MuiTypography--heading'}
-                variant={'h6'}
-                gutterBottom
-              >
-                Welcome to the Would You Rather App
-              </Typography>
-              <Typography>Please Sign in to continue</Typography>
-              <Divider />
-            </CardContent>
-            <CardMedia>
+        <Card className={classes.root}>
+          <CardContent className={classes.cardHeader}>
+            <Typography style={{ color: 'white' }} variant={'h6'} gutterBottom>
+              Welcome to the Would You Rather App
+            </Typography>
+            <Typography style={{ color: 'white' }} variant='body2' gutterBottom>
+              Please Sign in to continue
+            </Typography>
+          </CardContent>
+
+          <CardMedia>
+            <Avatar className={classes.avatar} src='/images/logo.jpeg' />
+          </CardMedia>
+          <CardContent>
+            <select
+              className={classes.selectUser}
+              defaultValue='chooseUser'
+              onChange={(e) => setSelectedUser(e.target.value)}
+            >
+              <option value='chooseUser' disabled>
+                Select User to Login
+              </option>
               {users.map((user) => (
-                <Avatar
-                  className={classes.avatar}
-                  key={user.id}
-                  src={user.avatarURL}
-                />
-              ))}
-            </CardMedia>
-            <CardContent>
-              <select
-                defaultValue='chooseUser'
-                onChange={(e) => setSelectedUser(e.target.value)}
-              >
-                <option value='chooseUser' disabled>
-                  Select User to Login
+                <option value={user.id} key={user.id}>
+                  {user.name}
                 </option>
-                {users.map((user) => (
-                  <option value={user.id} key={user.id}>
-                    {user.name}
-                  </option>
-                ))}
-              </select>
-            </CardContent>
-            <CardActions>
-              <Button
-                variant='contained'
-                color='primary'
-                className={classes.button}
-                component={Link}
-                to='/dashboard'
-                disabled={selectedUser === 'chooseUser'}
-                onClick={(e) => {
-                  handleUserLogin(selectedUser);
-                }}
-              >
-                Sign In
-              </Button>
-            </CardActions>
-          </Card>
-        </Grid>
+              ))}
+            </select>
+          </CardContent>
+          <CardActions>
+            <Button
+              variant='contained'
+              style={{ color: 'white' }}
+              className={classes.button}
+              component={Link}
+              to='/dashboard'
+              disabled={selectedUser === '' || selectedUser === 'chooseUser'}
+              onClick={(e) => {
+                handleUserLogin(selectedUser);
+              }}
+            >
+              Sign In
+            </Button>
+          </CardActions>
+        </Card>
       </Grid>
     </Fragment>
   );

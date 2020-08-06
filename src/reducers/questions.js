@@ -1,4 +1,8 @@
-import { GET_QUESTIONS, SAVE_ANSWER, ADD_QUESTION } from '../actions/questions';
+import {
+  GET_QUESTIONS,
+  ADD_QUESTION,
+  ADD_ANSWER_TO_QUESTION,
+} from '../actions/questions';
 import { formatAddQuestion } from '../utils/helper';
 
 export default function questions(state = {}, action) {
@@ -8,8 +12,8 @@ export default function questions(state = {}, action) {
         ...state,
         ...action.questions,
       };
-    case SAVE_ANSWER:
-      const { answer, qid, authedUser } = action;
+    case ADD_ANSWER_TO_QUESTION:
+      const { authedUser, answer, qid } = action;
       return {
         ...state,
         [action.qid]: {
@@ -21,10 +25,10 @@ export default function questions(state = {}, action) {
         },
       };
     case ADD_QUESTION:
-      const formattedQuestion = formatAddQuestion(action.question);
+      const { question } = action;
       return {
         ...state,
-        [formattedQuestion.id]: formattedQuestion,
+        [question.id]: question,
       };
     default:
       return state;

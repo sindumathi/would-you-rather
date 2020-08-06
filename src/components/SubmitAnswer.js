@@ -6,7 +6,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import { Link } from 'react-router-dom';
 
-import { handleSaveAnswer } from '../actions/questions';
+import { handleSaveQuestionAnswer } from '../actions/users';
 import { ListItemText, Button, Typography } from '@material-ui/core';
 import Results from './Results';
 
@@ -20,7 +20,7 @@ class SubmitAnswer extends Component {
   handleAnswers = (id, authedUser, selectedAnswer) => {
     const { dispatch } = this.props;
     dispatch(
-      handleSaveAnswer({
+      handleSaveQuestionAnswer({
         authedUser,
         answer: selectedAnswer,
         qid: id,
@@ -28,12 +28,19 @@ class SubmitAnswer extends Component {
     );
   };
   render() {
-    const { optionOne, optionTwo, authedUser, id } = this.props.question;
+    const {
+      optionOne,
+      optionTwo,
+      authedUser,
+      id,
+      userAnswered,
+    } = this.props.question;
     const { comp } = this.props;
     const { selectedAnswer } = this.state;
+
     return (
       <Fragment>
-        {comp && comp === 'ANSWER_COMPONENT' ? (
+        {comp && comp === 'ANSWER_COMPONENT' && !userAnswered ? (
           <Fragment>
             <Typography gutterBottom variant='h5' component='h2'>
               Would You Rather?
@@ -71,7 +78,8 @@ class SubmitAnswer extends Component {
               </Button>
             </FormControl>
           </Fragment>
-        ) : comp && comp === 'RESULTS' ? (
+        ) : (comp && comp === 'RESULTS') ||
+          (comp && comp === 'ANSWER_COMPONENT' && userAnswered) ? (
           <Results questions={this.props.question} />
         ) : (
           <Fragment>
