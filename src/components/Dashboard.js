@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Questions from './Questions';
 import Divider from '@material-ui/core/Divider';
@@ -11,6 +11,7 @@ import {
   Button,
   Grid,
 } from '@material-ui/core';
+import PropTypes from 'prop-types';
 
 const customStyles = (theme) => ({
   root: {
@@ -24,43 +25,78 @@ const customStyles = (theme) => ({
     alignItems: 'center',
     display: 'flex',
     justifyContent: 'center',
+    fontSize: 16,
   },
 
   cardItem: {
     alignItems: 'center',
     display: 'flex',
     justifyContent: 'center',
-    backgroundColor: '#ab47bc',
+
     border: '1px solid white',
+  },
+  button: {
+    color: '#ab47bc',
+    width: '100%',
+    height: '100%',
+    textTransform: 'none',
+    fontSize: 16,
+    backgroundColor: '#f3e5f5',
+    '&:hover': {
+      backgroundColor: ' #b39ddb',
+    },
+  },
+  buttonActive: {
+    color: 'white',
+    width: '100%',
+    height: '100%',
+    textTransform: 'none',
+    fontSize: 16,
+    backgroundColor: '#ab47bc',
+    '&:hover': {
+      backgroundColor: '#ab47bc',
+    },
   },
 });
 
+//Dashboard: This contains Unanswered and answered Tab
 class Dashboard extends Component {
-  state = { answered: 'Unanswered' };
+  state = {
+    answered: 'unanswered',
+    answeredColor: 'button',
+    unAnsweredColor: 'buttonActive',
+  };
   handleQuestionsDisplay = (e, value) => {
     e.preventDefault();
     this.setState({ answered: value });
+    value === 'answered'
+      ? this.setState({
+          answeredColor: 'buttonActive',
+          unAnsweredColor: 'button',
+        })
+      : this.setState({
+          answeredColor: 'button',
+          unAnsweredColor: 'buttonActive',
+        });
   };
 
   render() {
-    const { unansweredQuestionIDs, answeredQuestionIDs, classes } = this.props;
+    const { unansweredQuestionIDs, answeredSortedIDs, classes } = this.props;
     const { answered } = this.state;
     const QuestionIDs =
-      answered === 'answered' ? answeredQuestionIDs : unansweredQuestionIDs;
+      answered === 'answered' ? answeredSortedIDs : unansweredQuestionIDs;
     return (
       <Paper className={classes.card}>
-        <Grid
-          xs={12}
-          container
-          direction='row'
-          justify='center'
-          alignItems='center'
-        >
+        <Grid container direction='row' justify='center' alignItems='center'>
           <Grid item xs={6} className={classes.cardItem}>
             <Button
-              size='small'
-              style={{ color: 'white' }}
-              onClick={(e) => this.handleQuestionsDisplay(e, 'Unanswered')}
+              id='unanswered'
+              className={
+                this.state.unAnsweredColor === 'buttonActive'
+                  ? classes.buttonActive
+                  : classes.button
+              }
+              onClick={(e) => this.handleQuestionsDisplay(e, 'unanswered')}
             >
               Unanswered
             </Button>
@@ -68,8 +104,12 @@ class Dashboard extends Component {
 
           <Grid item xs={6} className={classes.cardItem}>
             <Button
-              size='small'
-              style={{ color: 'white' }}
+              id='answered'
+              className={
+                this.state.answeredColor === 'buttonActive'
+                  ? classes.buttonActive
+                  : classes.button
+              }
               onClick={(e) => this.handleQuestionsDisplay(e, 'answered')}
             >
               Answered
@@ -98,11 +138,24 @@ const mapStateToProps = ({ authedUser, questions, users }) => {
   const answeredQuestionIDs = authedUser ? Object.keys(userAnswer) : [];
   const unansweredQuestionIDs = Object.keys(questions)
     .filter((id) => !answeredQuestionIDs.includes(id))
-    .sort((x, y) => y.timestamp - x.timestamp);
+    .sort((x, y) => questions[y].timestamp - questions[x].timestamp);
+
+  const answeredSortedIDs = Object.keys(questions)
+    .filter((id) => answeredQuestionIDs.includes(id))
+    .sort((x, y) => questions[y].timestamp - questions[x].timestamp);
+
   return {
-    answeredQuestionIDs,
+    answeredSortedIDs,
     unansweredQuestionIDs,
   };
+};
+
+//Proptypes
+Dashboard.propTypes = {
+  authedUser: PropTypes.string.isRequired,
+  unansweredQuestionIDs: PropTypes.array.isRequired,
+  answeredSortedIDs: PropTypes.array.isRequired,
+  classes: PropTypes.object.isRequired,
 };
 
 export default connect(mapStateToProps)(withStyles(customStyles)(Dashboard));

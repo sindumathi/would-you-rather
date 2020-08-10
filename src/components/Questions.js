@@ -5,6 +5,7 @@ import { formattedResult } from '../utils/helper';
 import { makeStyles } from '@material-ui/core/styles';
 import { Paper, Grid, ListItemAvatar, Avatar } from '@material-ui/core';
 import SubmitAnswer from './SubmitAnswer';
+import PropTypes from 'prop-types';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -15,12 +16,17 @@ const useStyles = makeStyles((theme) => ({
     margin: 'auto',
     width: 500,
     minWidth: 300,
+    boxShadow: 'none',
+    border: '2px solid #b39ddb',
+    fontSize: 16,
   },
   authorHeading: {
-    backgroundColor: '#b39ddb',
+    borderBottom: '3px solid  #b39ddb',
+    color: '#ab47bc',
+    marginBottom: 10,
   },
   avatar: {
-    borderRight: '0.1em solid #d1c4e9',
+    borderRight: '1px solid #d1c4e9',
     padding: '0.5em',
     alignItems: 'center',
     display: 'flex',
@@ -32,7 +38,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Questions = ({ question, answerQuestion, comp = '', results = '' }) => {
+//Displays author and avatar
+const Questions = ({ question, answerQuestion, comp = '' }) => {
   const { avatarURL, author } = question;
   const classes = useStyles();
   return (
@@ -66,6 +73,15 @@ const mapStateToProps = ({ users, questions, authedUser }, { id }) => {
     question: formatQuestion(authedUser, question, users[question.author]),
     answerQuestion: formattedResult(authedUser, question),
   };
+};
+
+//Proptypes
+Questions.propTypes = {
+  question: PropTypes.shape({
+    author: PropTypes.string.isRequired,
+    avatarURL: PropTypes.string.isRequired,
+  }),
+  answerQuestion: PropTypes.object.isRequired,
 };
 
 export default connect(mapStateToProps)(Questions);

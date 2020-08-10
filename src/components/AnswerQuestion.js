@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Questions from './Questions';
+import PropTypes from 'prop-types';
+
+//Answer Poll functionality
 class AnswerQuestion extends Component {
   render() {
     const qid = this.props.match.params.id || this.props.location.state.id;
@@ -22,5 +25,9 @@ const mapStateToProps = ({ authedUser }, { qid }) => {
     authedUser,
     qid,
   };
+};
+
+AnswerQuestion.propTypes = {
+  authedUser: PropTypes.string.isRequired,
 };
 export default connect(mapStateToProps)(AnswerQuestion);

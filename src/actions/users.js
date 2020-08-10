@@ -22,16 +22,11 @@ function saveAnswerToUser({ authedUser, qid, answer }) {
 
 export function handleSaveQuestionAnswer(info) {
   return (dispatch) => {
-    return saveQuestionAnswer(info)
-      .then((info) => {
-        dispatch(saveAnswerToUser(info));
-        dispatch(saveAnswerToQuestion(info));
-      })
-      .catch((e) => {
-        console.warn('ERROR:Save Answer-', e);
-        dispatch(saveAnswerToUser(info));
-        dispatch(saveAnswerToQuestion(info));
-      });
+    dispatch(saveAnswerToUser(info));
+    dispatch(saveAnswerToQuestion(info));
+    return saveQuestionAnswer(info).catch((e) => {
+      console.warn('ERROR:Save Answer-', e);
+    });
   };
 }
 

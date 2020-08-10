@@ -12,9 +12,6 @@ export function getQuestions(questions) {
 }
 
 function addQuestion(question) {
-  console.log('------------action addquestion---------------');
-  console.log(question);
-  console.log('------------action addquestion---------------');
   return {
     type: ADD_QUESTION,
     question,
@@ -22,9 +19,6 @@ function addQuestion(question) {
 }
 
 export function handleAddQuestion(question) {
-  console.log('------------handleaddquestion---------------');
-  console.log(question);
-  console.log('------------handleaddquestion---------------');
   return (dispatch) => {
     return saveQuestion(question)
       .then((question) => {

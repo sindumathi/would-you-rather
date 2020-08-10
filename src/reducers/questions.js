@@ -3,7 +3,6 @@ import {
   ADD_QUESTION,
   ADD_ANSWER_TO_QUESTION,
 } from '../actions/questions';
-import { formatAddQuestion } from '../utils/helper';
 
 export default function questions(state = {}, action) {
   switch (action.type) {

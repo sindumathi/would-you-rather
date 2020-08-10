@@ -1,14 +1,20 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
+import {
+  Radio,
+  RadioGroup,
+  Button,
+  FormControlLabel,
+  FormControl,
+  ListItemText,
+  Typography,
+  Container,
+} from '@material-ui/core';
 import { Link } from 'react-router-dom';
 
 import { handleSaveQuestionAnswer } from '../actions/users';
-import { ListItemText, Button, Typography } from '@material-ui/core';
 import Results from './Results';
+import PropTypes from 'prop-types';
 
 class SubmitAnswer extends Component {
   state = { selectedAnswer: 'optionOne' };
@@ -19,13 +25,8 @@ class SubmitAnswer extends Component {
   };
   handleAnswers = (id, authedUser, selectedAnswer) => {
     const { dispatch } = this.props;
-    dispatch(
-      handleSaveQuestionAnswer({
-        authedUser,
-        answer: selectedAnswer,
-        qid: id,
-      })
-    );
+    const info = { authedUser: authedUser, answer: selectedAnswer, qid: id };
+    dispatch(handleSaveQuestionAnswer(info));
   };
   render() {
     const {
@@ -37,9 +38,8 @@ class SubmitAnswer extends Component {
     } = this.props.question;
     const { comp } = this.props;
     const { selectedAnswer } = this.state;
-
     return (
-      <Fragment>
+      <Container>
         {comp && comp === 'ANSWER_COMPONENT' && !userAnswered ? (
           <Fragment>
             <Typography gutterBottom variant='h5' component='h2'>
@@ -64,7 +64,7 @@ class SubmitAnswer extends Component {
               </RadioGroup>
               <Button
                 variant='contained'
-                color='primary'
+                style={{ backgroundColor: '#ab47bc', color: 'white' }}
                 component={Link}
                 to={{
                   pathname: `/questions/${id}`,
@@ -87,12 +87,38 @@ class SubmitAnswer extends Component {
               Would You Rather?
             </Typography>
             <ListItemText>{optionOne.text}</ListItemText>
-            <ListItemText>{optionTwo.text}</ListItemText>
-            <Link to={`questions/${id}`}>View Poll</Link>
+            <ListItemText>
+              <small>..OR..</small>
+            </ListItemText>
+            <Button
+              style={{
+                backgroundColor: '#ab47bc',
+                color: 'white',
+                textTransform: 'none',
+                width: '100%',
+                marginTop: 20,
+              }}
+              component={Link}
+              to={`questions/${id}`}
+            >
+              View Poll
+            </Button>
           </Fragment>
         )}
-      </Fragment>
+      </Container>
     );
   }
 }
+
+//Proptypes
+SubmitAnswer.propTypes = {
+  questions: PropTypes.shape({
+    optionOne: PropTypes.object.isRequired,
+    optionTwo: PropTypes.object.isRequired,
+    authedUser: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
+    userAnswered: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  }),
+};
+
 export default connect()(SubmitAnswer);

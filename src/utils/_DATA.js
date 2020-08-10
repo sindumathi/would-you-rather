@@ -14,24 +14,37 @@ let users = {
   tylermcginnis: {
     id: 'tylermcginnis',
     name: 'Tyler McGinnis',
-    avatarURL: 'http://www.masscue.org/wp-content/uploads/2017/03/tyler.jpg',
+    avatarURL: '/images/mickey.png',
     answers: {
       vthrdm985a262al8qx3do: 'optionOne',
       xj352vofupe1dqz9emx13r: 'optionTwo',
+      fj352hofupf1dqz9emx13r: 'optionTwo',
     },
     questions: ['loxhs1bqm25b708cmbf3g', 'vthrdm985a262al8qx3do'],
   },
   johndoe: {
     id: 'johndoe',
     name: 'John Doe',
-    avatarURL:
-      'http://www.masscue.org/wp-content/uploads/2017/03/male-no-image.jpg',
+    avatarURL: '/images/minnie.png',
     answers: {
       xj352vofupe1dqz9emx13r: 'optionOne',
       vthrdm985a262al8qx3do: 'optionTwo',
       '6ni6ok3ym7mf1p33lnez': 'optionTwo',
+      fj352hofupf1dqz9emx13r: 'optionOne',
     },
     questions: ['6ni6ok3ym7mf1p33lnez', 'xj352vofupe1dqz9emx13r'],
+  },
+  harsithk: {
+    id: 'harsithk',
+    name: 'Harsith Karthik',
+    avatarURL: '/images/mickey.png',
+    answers: {
+      vthrdm985a262al8qx3do: 'optionOne',
+      xj352vofupe1dqz9emx13r: 'optionTwo',
+      '6ni6ok3ym7mf1p33lnez': 'optionTwo',
+      am8ehyc8byjqgar0jgpub9: 'optionTwo',
+    },
+    questions: ['fj352hofupf1dqz9emx13r'],
   },
 };
 
@@ -58,7 +71,7 @@ let questions = {
       text: 'become a superhero',
     },
     optionTwo: {
-      votes: ['johndoe', 'sarahedo'],
+      votes: ['johndoe', 'sarahedo', 'harsithk'],
       text: 'become a supervillain',
     },
   },
@@ -71,7 +84,7 @@ let questions = {
       text: 'be telekinetic',
     },
     optionTwo: {
-      votes: ['sarahedo'],
+      votes: ['sarahedo', 'harsithk'],
       text: 'be telepathic',
     },
   },
@@ -93,7 +106,7 @@ let questions = {
     author: 'tylermcginnis',
     timestamp: 1489579767190,
     optionOne: {
-      votes: ['tylermcginnis'],
+      votes: ['tylermcginnis', 'harsithk'],
       text: 'find $50 yourself',
     },
     optionTwo: {
@@ -110,8 +123,21 @@ let questions = {
       text: 'write JavaScript',
     },
     optionTwo: {
-      votes: ['tylermcginnis'],
+      votes: ['tylermcginnis', 'harsithk'],
       text: 'write Swift',
+    },
+  },
+  fj352hofupf1dqz9emx13r: {
+    id: 'fj352hofupf1dqz9emx13r',
+    author: 'harsithk',
+    timestamp: 1893279767190,
+    optionOne: {
+      votes: ['johndoe'],
+      text: 'Make rocketship by yourself',
+    },
+    optionTwo: {
+      votes: ['tylermcginnis'],
+      text: 'Make rocketship with your friends',
     },
   },
 };
@@ -136,9 +162,6 @@ export function _getQuestions() {
 }
 
 function formatQuestion({ optionOneText, optionTwoText, author }) {
-  console.log('------------data js ---------------');
-  console.log(optionOneText + 'one' + optionTwoText + 'two' + author);
-  console.log('------------data js ---------------');
   return {
     id: generateUID(),
     timestamp: Date.now(),

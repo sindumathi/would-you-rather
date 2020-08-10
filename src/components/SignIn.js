@@ -7,6 +7,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import PropTypes from 'prop-types';
 
 import Avatar from '@material-ui/core/Avatar';
 import { connect } from 'react-redux';
@@ -17,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: 500,
     minHeight: 500,
     textAlign: 'center',
+    fontSize: 16,
     margin: 'auto',
     transition: '0.3s',
     boxShadow: '0 8px 40px -12px rgba(0,0,0,0.3)',
@@ -29,6 +31,9 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     backgroundColor: '#ab47bc',
     align: 'center',
+    '&:hover': {
+      background: '#ab47bc',
+    },
   },
   avatar: {
     margin: 'auto',
@@ -115,4 +120,11 @@ const mapStateToProps = ({ users }) => {
     users: Object.values(users),
   };
 };
+
+//Proptypes
+SignIn.propTypes = {
+  users: PropTypes.array.isRequired,
+  handleUserLogin: PropTypes.func.isRequired,
+};
+
 export default connect(mapStateToProps)(SignIn);

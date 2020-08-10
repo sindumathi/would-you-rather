@@ -29,9 +29,10 @@ export function formattedResult(authedUser, question) {
     totalVotes
   );
   const userAnswered = ((optionOne, optionTwo, authedUser) => {
-    return optionOne.votes.includes(authedUser) ||
-      optionTwo.votes.includes(authedUser)
-      ? true
+    return optionOne.votes.includes(authedUser)
+      ? 'optionOne'
+      : optionTwo.votes.includes(authedUser)
+      ? 'optionTwo'
       : false;
   })(optionOne, optionTwo, authedUser);
   return {
@@ -55,14 +56,6 @@ function generateUID() {
 }
 
 export function formatAddQuestion({ optionOneText, optionTwoText, author }) {
-  console.log(
-    'optionOneText' +
-      optionOneText +
-      'optionTwoText' +
-      optionTwoText +
-      'author' +
-      author
-  );
   return {
     id: generateUID(),
     timestamp: Date.now(),
