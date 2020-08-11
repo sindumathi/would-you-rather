@@ -41,6 +41,7 @@ const Header = (props) => {
   }
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    props.history.push(value);
   };
 
   return (
@@ -48,7 +49,7 @@ const Header = (props) => {
       <AppBar position='static' className={classes.appbar}>
         <Toolbar variant='dense'>
           <Tabs
-            value={value}
+            value={props.history.location.pathname}
             onChange={handleChange}
             indicatorColor='primary'
             textColor='primary'
@@ -59,6 +60,7 @@ const Header = (props) => {
               label='Home'
               color='inherit'
               className={classes.button}
+              value='/dashboard'
               component={Link}
               to='/dashboard'
             />
@@ -66,6 +68,7 @@ const Header = (props) => {
               label='New Question'
               color='inherit'
               className={classes.button}
+              value='/add'
               component={Link}
               to='/add'
             />
@@ -73,6 +76,7 @@ const Header = (props) => {
               label='LeaderBoard '
               color='inherit'
               className={classes.button}
+              value='/leaderboard'
               component={Link}
               to='/leaderboard'
             />
