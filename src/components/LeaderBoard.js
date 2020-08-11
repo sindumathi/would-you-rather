@@ -86,7 +86,7 @@ const customStyles = (theme) => ({
   },
 });
 
-//Displays Top three who have more points
+//Displays Top three users who have more points
 class LeaderBoard extends Component {
   render() {
     const { users, classes } = this.props;

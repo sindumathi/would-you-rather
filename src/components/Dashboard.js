@@ -60,6 +60,7 @@ const customStyles = (theme) => ({
 });
 
 //Dashboard: This contains Unanswered and answered Tab
+//Displays the questions in desending order
 class Dashboard extends Component {
   state = {
     answered: 'unanswered',

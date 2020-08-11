@@ -51,6 +51,7 @@ const customStyles = (theme) => ({
 });
 // User can create new question
 // This page loads in '/add' path and go to home page(Dashboard) after adding question
+// controlled component: questions are stored in state before storing it to redux store.
 class AddQuestion extends Component {
   state = { question1: '', question2: '' };
   handleInputChange = (e) => {

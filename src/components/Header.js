@@ -29,11 +29,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+//Navigation tabs, Switches between tabs and highlights selected tab.
 const Header = (props) => {
   const [value, setValue] = useState(0);
   const classes = useStyles();
   const { name, avatarURL } = props.user;
-
+  const path = ['/dashboard', '/add', '/leaderboard'];
+  const { pathname } = props.history.location;
   function handleLogout(e) {
     e.preventDefault();
     props.logout();
@@ -49,7 +51,7 @@ const Header = (props) => {
       <AppBar position='static' className={classes.appbar}>
         <Toolbar variant='dense'>
           <Tabs
-            value={props.history.location.pathname}
+            value={pathname.includes(path) ? pathname : '/dashboard'}
             onChange={handleChange}
             indicatorColor='primary'
             textColor='primary'

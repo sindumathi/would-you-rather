@@ -11,7 +11,7 @@ import {
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
 
-//Displays the users result.
+//Displays the users result with progress bar.
 const BorderLinearProgress = withStyles((theme) => ({
   root: {
     height: 25,

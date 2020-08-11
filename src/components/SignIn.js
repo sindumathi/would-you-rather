@@ -59,6 +59,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+//SignIn page
+//Controlled Component stores the selected user and it is stored in redux store.
 const SignIn = (props) => {
   const [selectedUser, setSelectedUser] = useState('');
   const classes = useStyles();

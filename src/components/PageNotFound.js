@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Container, Typography, Paper, Button } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 
+//This page will be displayed when user refreshes the page or try to access page with URL
 class PageNotFound extends Component {
   render() {
     return (

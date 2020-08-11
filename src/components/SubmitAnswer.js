@@ -16,6 +16,8 @@ import { handleSaveQuestionAnswer } from '../actions/users';
 import Results from './Results';
 import PropTypes from 'prop-types';
 
+//Displays the questions based on users request
+//Controlled component state stores selected option until it is submitted to store.
 class SubmitAnswer extends Component {
   state = { selectedAnswer: 'optionOne' };
 
