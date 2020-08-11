@@ -8,7 +8,7 @@ This app is the second of three projects required for [Udacity's React Nanodegre
 
 ## Installation
 
-Clone the repository and use 'npm install' to install the dependencies.
+Clone the repository,Change directory to project directory and use 'npm install' to install the dependencies.
 
 \$ git clone https://github.com/sindumathi/would-you-rather.git
 
@@ -22,4 +22,4 @@ The project can be run with
 
 The project can be viewed in the browser at
 
--http://localhost:3000
+-(http://localhost:3000)

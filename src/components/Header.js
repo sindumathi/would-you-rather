@@ -36,6 +36,7 @@ const Header = (props) => {
   const { name, avatarURL } = props.user;
   const path = ['/dashboard', '/add', '/leaderboard'];
   const { pathname } = props.history.location;
+
   function handleLogout(e) {
     e.preventDefault();
     props.logout();
@@ -51,7 +52,7 @@ const Header = (props) => {
       <AppBar position='static' className={classes.appbar}>
         <Toolbar variant='dense'>
           <Tabs
-            value={pathname.includes(path) ? pathname : '/dashboard'}
+            value={path.includes(pathname) ? pathname : '/dashboard'}
             onChange={handleChange}
             indicatorColor='primary'
             textColor='primary'
