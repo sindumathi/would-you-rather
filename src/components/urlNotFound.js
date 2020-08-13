@@ -17,18 +17,18 @@ class PageNotFound extends Component {
         <Paper style={{ margin: 'auto', padding: 80 }}>
           <Typography variant='h3'>Page Not Found.</Typography>
           <p style={{ textAlign: 'center' }}>
-            Sorry. Polling question does not exist.
+            Sorry! you entered a wrong URL that does not exist.
           </p>
           <p style={{ textAlign: 'center' }}>
-            Please go to
+            Please
             <Button
               component={Link}
               style={{ color: 'white', backgroundColor: '#ab47bc', margin: 5 }}
-              to='/dashboard'
+              to='/'
             >
-              Home
+              Signin
             </Button>
-            to continue voting.
+            to play a fun would you rather game.
           </p>
         </Paper>
       </Container>

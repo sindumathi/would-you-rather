@@ -1,6 +1,5 @@
-import React, { Fragment, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
+import React, { Fragment } from 'react';
+import { Card, withStyles } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
@@ -11,9 +10,10 @@ import PropTypes from 'prop-types';
 
 import Avatar from '@material-ui/core/Avatar';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { withRouter, Redirect } from 'react-router-dom';
+import { setAuthUser } from '../actions/authedUser';
 
-const useStyles = makeStyles((theme) => ({
+const customStyles = (theme) => ({
   root: {
     maxWidth: 500,
     minHeight: 500,
@@ -57,66 +57,111 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   },
-}));
+});
 
 //SignIn page
 //Controlled Component stores the selected user and it is stored in redux store.
-const SignIn = (props) => {
-  const [selectedUser, setSelectedUser] = useState('');
-  const classes = useStyles();
-  const { users, handleUserLogin } = props;
-  return (
-    <Fragment>
-      <Grid container style={{ marginTop: 40 }}>
-        <Card className={classes.root}>
-          <CardContent className={classes.cardHeader}>
-            <Typography style={{ color: 'white' }} variant={'h6'} gutterBottom>
-              Welcome to the Would You Rather App
-            </Typography>
-            <Typography style={{ color: 'white' }} variant='body2' gutterBottom>
-              Please Sign in to continue
-            </Typography>
-          </CardContent>
-
-          <CardMedia>
-            <Avatar className={classes.avatar} src='/images/logo.jpeg' />
-          </CardMedia>
-          <CardContent>
-            <select
-              className={classes.selectUser}
-              defaultValue='chooseUser'
-              onChange={(e) => setSelectedUser(e.target.value)}
-            >
-              <option value='chooseUser' disabled>
-                Select User to Login
-              </option>
-              {users.map((user) => (
-                <option value={user.id} key={user.id}>
-                  {user.name}
-                </option>
-              ))}
-            </select>
-          </CardContent>
-          <CardActions>
-            <Button
-              variant='contained'
-              style={{ color: 'white' }}
-              className={classes.button}
-              component={Link}
-              to='/dashboard'
-              disabled={selectedUser === '' || selectedUser === 'chooseUser'}
-              onClick={(e) => {
-                handleUserLogin(selectedUser);
+class SignIn extends React.Component {
+  state = { selectedUser: '', redirectToReferrer: false };
+  handleUserLogin = (user, e) => {
+    e.preventDefault();
+    this.props.dispatch(setAuthUser(user));
+    this.setState({ redirectToReferrer: true });
+  };
+  handlePath = (path) => {
+    return path === '/leaderboard'
+      ? 'visit Leader board'
+      : path === '/add'
+      ? 'create New Question'
+      : 'Game';
+  };
+  render() {
+    const { users, classes } = this.props;
+    const { from } = this.props.location.state || {
+      from: { pathname: '/dashboard' },
+    };
+    const { selectedUser, redirectToReferrer } = this.state;
+    if (redirectToReferrer) {
+      return <Redirect to={from} />;
+    }
+    return (
+      <Fragment>
+        <Grid container style={{ marginTop: 40 }}>
+          <Grid
+            item
+            xs={12}
+            style={{ display: 'flex', justifyContent: 'center' }}
+          >
+            <Typography
+              style={{
+                color: '#ab47bc',
+                marginBottom: 40,
               }}
+              variant={'h6'}
+              gutterBottom
             >
-              Sign In
-            </Button>
-          </CardActions>
-        </Card>
-      </Grid>
-    </Fragment>
-  );
-};
+              Please Signin to {this.handlePath(from.pathname)}!!!
+            </Typography>
+          </Grid>
+          <Card className={classes.root}>
+            <CardContent className={classes.cardHeader}>
+              <Typography
+                style={{ color: 'white' }}
+                variant={'h6'}
+                gutterBottom
+              >
+                Welcome to the Would You Rather App
+              </Typography>
+              <Typography
+                style={{ color: 'white' }}
+                variant='body2'
+                gutterBottom
+              >
+                Please Sign in to continue
+              </Typography>
+            </CardContent>
+
+            <CardMedia>
+              <Avatar className={classes.avatar} src='/images/logo.jpeg' />
+            </CardMedia>
+            <CardContent>
+              <select
+                className={classes.selectUser}
+                defaultValue='chooseUser'
+                onChange={(e) =>
+                  this.setState({ selectedUser: e.target.value })
+                }
+              >
+                <option value='chooseUser' disabled>
+                  Select User to Login
+                </option>
+                {users.map((user) => (
+                  <option value={user.id} key={user.id}>
+                    {user.name}
+                  </option>
+                ))}
+              </select>
+            </CardContent>
+            <CardActions>
+              <Button
+                variant='contained'
+                style={{ color: 'white' }}
+                className={classes.button}
+                disabled={selectedUser === '' || selectedUser === 'chooseUser'}
+                onClick={(e) => {
+                  this.handleUserLogin(selectedUser, e);
+                }}
+              >
+                Sign In
+              </Button>
+            </CardActions>
+          </Card>
+        </Grid>
+      </Fragment>
+    );
+  }
+}
+
 const mapStateToProps = ({ users }) => {
   return {
     users: Object.values(users),
@@ -126,7 +171,8 @@ const mapStateToProps = ({ users }) => {
 //Proptypes
 SignIn.propTypes = {
   users: PropTypes.array.isRequired,
-  handleUserLogin: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps)(SignIn);
+export default withRouter(
+  connect(mapStateToProps)(withStyles(customStyles)(SignIn))
+);

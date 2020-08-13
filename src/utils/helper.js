@@ -17,6 +17,15 @@ function findPercentage(value, totalValue) {
   return result;
 }
 
+export function userAnswered(authedUser, question) {
+  const { optionOne, optionTwo } = question;
+  return optionOne.votes.includes(authedUser)
+    ? 'optionOne'
+    : optionTwo.votes.includes(authedUser)
+    ? 'optionTwo'
+    : false;
+}
+
 export function formattedResult(authedUser, question) {
   const { id, author, optionOne, optionTwo } = question;
   const totalVotes = optionOne.votes.length + optionTwo.votes.length;

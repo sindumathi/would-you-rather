@@ -27,13 +27,25 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
     color: 'white',
   },
+  focusFrame: {
+    background: '#9575cd',
+    color: '#9575cd',
+    '&:active': {
+      outline: 'none',
+    },
+    '&:focus': {
+      background: '#9575cd',
+    },
+  },
 }));
 
 //Navigation tabs, Switches between tabs and highlights selected tab.
 const Header = (props) => {
   const [value, setValue] = useState(0);
   const classes = useStyles();
-  const { name, avatarURL } = props.user;
+  const { authedUser } = props;
+  const { name, avatarURL } = props.user || '';
+
   const path = ['/dashboard', '/add', '/leaderboard'];
   const { pathname } = props.history.location;
 
@@ -52,7 +64,7 @@ const Header = (props) => {
       <AppBar position='static' className={classes.appbar}>
         <Toolbar variant='dense'>
           <Tabs
-            value={path.includes(pathname) ? pathname : '/dashboard'}
+            value={path.includes(pathname) ? pathname : false}
             onChange={handleChange}
             indicatorColor='primary'
             textColor='primary'
@@ -85,15 +97,29 @@ const Header = (props) => {
             />
           </Tabs>
           <Typography style={{ flex: 1 }}></Typography>
-          <Typography className={classes.authUserName}>Hello {name}</Typography>
-          <Avatar alt='Remy Sharp' src={avatarURL} className={classes.small} />
-          <Button
-            color='inherit'
-            className={classes.button}
-            onClick={handleLogout}
-          >
-            Logout
-          </Button>
+          {authedUser ? (
+            <React.Fragment>
+              <Typography className={classes.authUserName}>
+                Hello {name}
+              </Typography>
+              <Avatar
+                alt='Remy Sharp'
+                src={avatarURL}
+                className={classes.small}
+              />
+              <Button
+                color='inherit'
+                className={classes.button}
+                onClick={handleLogout}
+              >
+                Logout
+              </Button>
+            </React.Fragment>
+          ) : (
+            <Typography className={classes.authUserName}>
+              Signin to Game
+            </Typography>
+          )}
         </Toolbar>
       </AppBar>
     </div>
@@ -104,12 +130,12 @@ const mapStateToProps = ({ users }, { authedUser }) => {
   const user = users[authedUser];
   return {
     user,
+    authedUser,
   };
 };
 
 //Proptypes
 Header.propTypes = {
-  authedUser: PropTypes.string.isRequired,
   user: PropTypes.shape({
     name: PropTypes.string.isRequired,
     avatarURL: PropTypes.string.isRequired,

@@ -148,6 +148,7 @@ const mapStateToProps = ({ authedUser, questions, users }) => {
   return {
     answeredSortedIDs,
     unansweredQuestionIDs,
+    authedUser,
   };
 };
 

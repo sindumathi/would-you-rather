@@ -54,6 +54,7 @@ const customStyles = (theme) => ({
 // controlled component: questions are stored in state before storing it to redux store.
 class AddQuestion extends Component {
   state = { question1: '', question2: '' };
+
   handleInputChange = (e) => {
     const { value, name } = e.target;
     this.setState({ [name]: value });
@@ -61,6 +62,7 @@ class AddQuestion extends Component {
 
   handleSubmit = (e) => {
     const { dispatch, authedUser } = this.props;
+
     const question = {
       optionOneText: this.state.question1,
       optionTwoText: this.state.question2,
@@ -133,8 +135,14 @@ class AddQuestion extends Component {
   }
 }
 
+const mapStateToProps = ({ authedUser }) => {
+  return {
+    authedUser,
+  };
+};
 AddQuestion.propTypes = {
   classes: PropTypes.object.isRequired,
+  authedUser: PropTypes.string.isRequired,
 };
 
-export default connect()(withStyles(customStyles)(AddQuestion));
+export default connect(mapStateToProps)(withStyles(customStyles)(AddQuestion));
