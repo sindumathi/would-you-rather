@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 //Displays author and avatar
-const Questions = ({ question, answerQuestion, comp = '' }) => {
+const Questions = ({ question, answerQuestion, comp = '', answered }) => {
   const { avatarURL, author } = question;
   const classes = useStyles();
   return (
@@ -59,7 +59,11 @@ const Questions = ({ question, answerQuestion, comp = '' }) => {
             </ListItemAvatar>
           </Grid>
           <Grid item xs={9}>
-            <SubmitAnswer question={answerQuestion} comp={comp} />
+            <SubmitAnswer
+              question={answerQuestion}
+              comp={comp}
+              answered={answered}
+            />
           </Grid>
         </Grid>
       </Paper>

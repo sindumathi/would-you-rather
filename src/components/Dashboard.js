@@ -118,7 +118,7 @@ const Dashboard = (props) => {
               {QuestionIDs &&
                 QuestionIDs.map((id) => (
                   <ListItem key={`${id}`}>
-                    <Questions id={id} authedUser />
+                    <Questions id={id} authedUser answered={answered} />
                   </ListItem>
                 ))}
             </List>

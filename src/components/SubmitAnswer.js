@@ -38,7 +38,14 @@ class SubmitAnswer extends Component {
       id,
       userAnswered,
     } = this.props.question;
-    const { comp } = this.props;
+    const { comp, answered } = this.props;
+    const path =
+      answered === 'answered'
+        ? {
+            pathname: `/questions/${id}`,
+            state: { results: 'RESULTS', id: `${id}` },
+          }
+        : `questions/${id}`;
     const { selectedAnswer } = this.state;
     return (
       <Container>
@@ -92,6 +99,7 @@ class SubmitAnswer extends Component {
             <ListItemText>
               <small>..OR..</small>
             </ListItemText>
+
             <Button
               style={{
                 backgroundColor: '#ab47bc',
@@ -101,7 +109,7 @@ class SubmitAnswer extends Component {
                 marginTop: 20,
               }}
               component={Link}
-              to={`questions/${id}`}
+              to={path}
             >
               View Poll
             </Button>
