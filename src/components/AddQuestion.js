@@ -48,6 +48,9 @@ const customStyles = (theme) => ({
       background: '#ab47bc',
     },
   },
+  error: {
+    color: 'red',
+  },
 });
 // User can create new question
 // This page loads in '/add' path and go to home page(Dashboard) after adding question
@@ -73,6 +76,9 @@ class AddQuestion extends Component {
   render() {
     const { question1, question2 } = this.state;
     const { classes } = this.props;
+    const sameQuestion =
+      (question1 && question1.trim().toLowerCase()) ===
+      (question2 && question2.trim().toLowerCase());
     return (
       <Paper className={classes.paper} elevation={3}>
         <Grid container>
@@ -86,6 +92,16 @@ class AddQuestion extends Component {
               <Typography variant='body2' gutterBottom>
                 Complete the question
               </Typography>
+              {question1 && sameQuestion && (
+                <Typography
+                  variant='body2'
+                  className={classes.error}
+                  gutterBottom
+                >
+                  Both the questions are same. Please enter different questions.
+                </Typography>
+              )}
+
               <Typography gutterBottom variant='h5'>
                 Would you rather...
               </Typography>
@@ -122,7 +138,7 @@ class AddQuestion extends Component {
                 type='submit'
                 component={Link}
                 to='/dashboard'
-                disabled={question1 === '' || question2 === ''}
+                disabled={question1 === '' || question2 === '' || sameQuestion}
                 onClick={this.handleSubmit}
               >
                 Submit
