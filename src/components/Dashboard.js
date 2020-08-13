@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Fragment, useState } from 'react';
 import { connect } from 'react-redux';
 import Questions from './Questions';
 import Divider from '@material-ui/core/Divider';
@@ -61,43 +61,38 @@ const customStyles = (theme) => ({
 
 //Dashboard: This contains Unanswered and answered Tab
 //Displays the questions in desending order
-class Dashboard extends Component {
-  state = {
-    answered: 'unanswered',
-    answeredColor: 'button',
-    unAnsweredColor: 'buttonActive',
-  };
-  handleQuestionsDisplay = (e, value) => {
+const Dashboard = (props) => {
+  const [answered, setAnswered] = useState('unanswered');
+  const [answeredColor, setAnsweredColor] = useState('button');
+  const [unAnsweredColor, setUnAnsweredColor] = useState('buttonActive');
+  const { unansweredQuestionIDs, answeredSortedIDs, classes } = props;
+  const QuestionIDs =
+    answered === 'answered' ? answeredSortedIDs : unansweredQuestionIDs;
+  function handleQuestionsDisplay(e, value) {
     e.preventDefault();
-    this.setState({ answered: value });
-    value === 'answered'
-      ? this.setState({
-          answeredColor: 'buttonActive',
-          unAnsweredColor: 'button',
-        })
-      : this.setState({
-          answeredColor: 'button',
-          unAnsweredColor: 'buttonActive',
-        });
-  };
+    setAnswered(value);
+    if (value === 'answered') {
+      setAnsweredColor('buttonActive');
+      setUnAnsweredColor('button');
+    } else {
+      setAnsweredColor('button');
+      setUnAnsweredColor('buttonActive');
+    }
+  }
 
-  render() {
-    const { unansweredQuestionIDs, answeredSortedIDs, classes } = this.props;
-    const { answered } = this.state;
-    const QuestionIDs =
-      answered === 'answered' ? answeredSortedIDs : unansweredQuestionIDs;
-    return (
+  return (
+    <Fragment>
       <Paper className={classes.card}>
         <Grid container direction='row' justify='center' alignItems='center'>
           <Grid item xs={6} className={classes.cardItem}>
             <Button
               id='unanswered'
               className={
-                this.state.unAnsweredColor === 'buttonActive'
+                unAnsweredColor === 'buttonActive'
                   ? classes.buttonActive
                   : classes.button
               }
-              onClick={(e) => this.handleQuestionsDisplay(e, 'unanswered')}
+              onClick={(e) => handleQuestionsDisplay(e, 'unanswered')}
             >
               Unanswered
             </Button>
@@ -107,11 +102,11 @@ class Dashboard extends Component {
             <Button
               id='answered'
               className={
-                this.state.answeredColor === 'buttonActive'
+                answeredColor === 'buttonActive'
                   ? classes.buttonActive
                   : classes.button
               }
-              onClick={(e) => this.handleQuestionsDisplay(e, 'answered')}
+              onClick={(e) => handleQuestionsDisplay(e, 'answered')}
             >
               Answered
             </Button>
@@ -130,9 +125,9 @@ class Dashboard extends Component {
           </Grid>
         </Grid>
       </Paper>
-    );
-  }
-}
+    </Fragment>
+  );
+};
 
 const mapStateToProps = ({ authedUser, questions, users }) => {
   const userAnswer = users[authedUser].answers;
